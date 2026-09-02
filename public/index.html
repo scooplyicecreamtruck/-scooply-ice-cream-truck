@@ -131,7 +131,7 @@ footer{border-top:1px solid var(--line);padding:30px 0 50px;color:var(--muted);f
       if (!r.ok || !j.ok) throw new Error(j.error || "Could not send request.");
       msg.className = "msg ok"; msg.style.display = "block";
       msg.textContent = `Request received! Your request number is ${j.bookingId}. Scooply will review it and reply by email.`;
-      e.currentTarget.reset(); summary();
+      $("bookingForm").reset(); summary();
     } catch(err) {
       msg.className = "msg bad"; msg.style.display = "block";
       msg.textContent = err.message || "Could not send request.";
