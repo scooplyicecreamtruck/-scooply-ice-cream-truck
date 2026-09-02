@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Scooply Ice Cream Truck</title>
+<style>
+:root{--pink:#ff6fa8;--pink2:#e95591;--teal:#66d7d0;--ink:#23323a;--muted:#6f7f86;--cream:#fffaf4;--line:#e7edef}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--cream);color:var(--ink)}a{color:inherit;text-decoration:none}button,input,select,textarea{font:inherit}.wrap{width:min(1160px,calc(100% - 28px));margin:auto}
+header{position:sticky;top:0;z-index:20;background:rgba(255,250,244,.93);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}nav{height:74px;display:flex;align-items:center;justify-content:space-between;gap:18px}.brand{display:flex;align-items:center;gap:11px;font-weight:900}.mark{width:44px;height:44px;border-radius:15px;background:var(--pink);display:grid;place-items:center;font-size:24px}.brand small{display:block;color:var(--muted);font-size:10px;letter-spacing:.8px}.links{display:flex;gap:22px;font-size:14px;font-weight:800}.btn{border:0;border-radius:999px;padding:13px 19px;font-weight:900;cursor:pointer}.primary{background:var(--pink);color:#fff;box-shadow:0 11px 28px rgba(255,111,168,.27)}.secondary{background:#fff;border:1px solid var(--line)}
+.hero{padding:72px 0;background:radial-gradient(circle at 12% 10%,rgba(102,215,208,.24),transparent 30%),radial-gradient(circle at 88% 16%,rgba(255,111,168,.18),transparent 29%)}.heroGrid{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center}.eyebrow{display:inline-block;background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 12px;color:#27a49d;font-weight:900;font-size:12px}h1{font-size:clamp(46px,7vw,82px);line-height:.95;letter-spacing:-4px;margin:18px 0}.pink{color:var(--pink)}.lead{font-size:18px;line-height:1.65;color:var(--muted);max-width:650px}.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:25px}.truck{background:linear-gradient(#dffaf7,#fff);border:1px solid #d3efec;border-radius:34px;min-height:390px;padding:26px;box-shadow:0 25px 70px rgba(35,50,58,.12);display:grid;place-items:center}.truck svg{width:100%;max-width:500px}
+section{padding:68px 0}.head{text-align:center;max-width:720px;margin:0 auto 32px}.head h2{font-size:clamp(32px,4vw,48px);letter-spacing:-2px;margin:0 0 10px}.head p{color:var(--muted);line-height:1.65}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.card{background:#fff;border:1px solid var(--line);border-radius:24px;padding:23px;box-shadow:0 12px 35px rgba(35,50,58,.06)}.card h3{margin:8px 0}.card p{color:var(--muted);line-height:1.6;font-size:14px}
+.booking{display:grid;grid-template-columns:1.15fr .85fr;gap:20px;align-items:start}.form{background:#fff;border:1px solid var(--line);border-radius:28px;padding:25px;box-shadow:0 20px 50px rgba(35,50,58,.1)}.grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}.field{display:flex;flex-direction:column;gap:6px}.full{grid-column:1/-1}label{font-size:13px;font-weight:900}input,select,textarea{width:100%;border:1px solid #dbe4e6;border-radius:14px;padding:13px 14px;background:#fbfdfd;outline:none;min-height:48px}textarea{min-height:100px;resize:vertical}input:focus,select:focus,textarea:focus{border-color:#50c6bf;box-shadow:0 0 0 4px rgba(102,215,208,.15)}.msg{display:none;margin-top:13px;padding:12px 14px;border-radius:14px;font-weight:800;font-size:13px}.ok{background:#eafaf7;color:#167c74}.bad{background:#fff0f0;color:#a33}
+.summaryRow{display:flex;justify-content:space-between;gap:16px;padding:11px 0;border-bottom:1px solid var(--line);font-size:14px}.summaryRow:last-child{border:0}.summaryRow span{color:var(--muted)}
+.chatBtn{position:fixed;right:19px;bottom:19px;z-index:40;background:var(--pink);color:#fff;border:0;border-radius:999px;padding:14px 18px;font-weight:900;box-shadow:0 16px 38px rgba(255,111,168,.36);cursor:pointer}.chat{display:none;position:fixed;right:19px;bottom:76px;width:min(380px,calc(100% - 28px));background:#fff;border:1px solid var(--line);border-radius:24px;overflow:hidden;z-index:39;box-shadow:0 28px 80px rgba(35,50,58,.24)}.chat.open{display:block}.chatHead{padding:15px 17px;background:linear-gradient(135deg,#fff0f6,#eafaf8);display:flex;justify-content:space-between;align-items:center}.chatHead strong{display:block}.chatHead small{color:var(--muted)}.close{border:0;background:#fff;width:36px;height:36px;border-radius:11px;cursor:pointer}.messages{height:335px;overflow:auto;padding:14px;background:#fcfdfd}.bubble{max-width:85%;padding:11px 13px;border-radius:16px;margin:8px 0;line-height:1.5;font-size:14px}.bot{background:#fff;border:1px solid var(--line);border-top-left-radius:6px}.user{background:var(--pink);color:#fff;margin-left:auto;border-top-right-radius:6px}.chatForm{display:flex;gap:8px;padding:11px;border-top:1px solid var(--line)}.chatForm input{min-width:0}.chatForm button{border:0;background:var(--teal);border-radius:13px;padding:0 15px;font-weight:900;cursor:pointer}.tiny{font-size:12px;color:var(--muted);line-height:1.5}
+footer{border-top:1px solid var(--line);padding:30px 0 50px;color:var(--muted);font-size:13px}.foot{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+@media(max-width:900px){.links{display:none}.heroGrid,.booking{grid-template-columns:1fr}.cards{grid-template-columns:1fr}.truck{min-height:300px}}
+@media(max-width:620px){.grid{grid-template-columns:1fr}.full{grid-column:auto}.actions .btn{width:100%}h1{letter-spacing:-2.5px}}
+</style>
+</head>
+<body>
+<header><nav class="wrap">
+  <a class="brand" href="#top"><span class="mark">🍦</span><span>Scooply<small>ICE CREAM TRUCK</small></span></a>
+  <div class="links"><a href="#services">Services</a><a href="#booking">Book</a><a href="#how">How it works</a><a href="mailto:scooplyicecreamtruck@gmail.com">Contact</a></div>
+  <a class="btn primary" href="#booking">Request Booking</a>
+</nav></header>
+
+<main id="top">
+<section class="hero"><div class="wrap heroGrid">
+  <div>
+    <span class="eyebrow">🍦 Parties • Schools • Community Events</span>
+    <h1>Sweet moments.<br><span class="pink">Anywhere.</span></h1>
+    <p class="lead">Request an ice cream truck for your event in a few simple steps. No online payment. Scooply reviews every request and confirms by email.</p>
+    <div class="actions"><a class="btn primary" href="#booking">Book an Ice Cream Truck</a><button class="btn secondary" id="openAi" type="button">✨ Ask Scooply AI</button></div>
+  </div>
+  <div class="truck">
+    <svg viewBox="0 0 760 420" aria-label="Scooply truck illustration" role="img">
+      <ellipse cx="385" cy="356" rx="250" ry="28" fill="#d9e4e6"/>
+      <rect x="130" y="120" width="420" height="210" rx="28" fill="#fff" stroke="#d8e6e7" stroke-width="5"/>
+      <path d="M550 205h78l55 55v70H550z" fill="#fff" stroke="#d8e6e7" stroke-width="5"/>
+      <rect x="165" y="146" width="245" height="110" rx="12" fill="#70d7d0"/>
+      <rect x="180" y="162" width="215" height="78" rx="8" fill="#e8fbf9"/>
+      <path d="M164 146h246l-20 26H184z" fill="#ff7caf"/>
+      <circle cx="224" cy="330" r="44" fill="#314248"/><circle cx="224" cy="330" r="22" fill="#dae2e4"/>
+      <circle cx="597" cy="330" r="44" fill="#314248"/><circle cx="597" cy="330" r="22" fill="#dae2e4"/>
+      <rect x="461" y="146" width="76" height="56" rx="12" fill="#ffbdd4"/>
+      <text x="220" y="296" font-size="48" font-family="Arial" font-weight="800" fill="#ff6fa8">Scooply</text>
+      <text x="222" y="319" font-size="16" font-family="Arial" font-weight="700" fill="#6b7b80">ICE CREAM TRUCK</text>
+      <path d="M474 97c0-21 17-38 38-38s38 17 38 38c0 11-5 21-12 28h-52c-7-7-12-17-12-28Z" fill="#ff8db7"/>
+      <path d="M489 125h46l-23 50z" fill="#f0b87b"/>
+    </svg>
+  </div>
+</div></section>
+
+<section id="services"><div class="wrap">
+  <div class="head"><h2>Made for events</h2><p>Easy requests for birthdays, schools, community gatherings, corporate events, and celebrations.</p></div>
+  <div class="cards"><div class="card"><div>🎂</div><h3>Birthday Parties</h3><p>Tell us the date, location, and guest count. We handle the follow-up by email.</p></div><div class="card"><div>🏫</div><h3>Schools & Camps</h3><p>Request service for school celebrations, camps, youth programs, and family days.</p></div><div class="card"><div>🎉</div><h3>Community Events</h3><p>Neighborhood events, parks, company events, and other celebrations.</p></div></div>
+</div></section>
+
+<section id="booking"><div class="wrap">
+  <div class="head"><h2>Request a booking</h2><p>The request is sent directly to Scooply. No Gmail window and no payment screen.</p></div>
+  <div class="booking">
+    <form class="form" id="bookingForm">
+      <div class="grid">
+        <div class="field"><label for="name">Your name</label><input id="name" required maxlength="120"></div>
+        <div class="field"><label for="email">Email</label><input id="email" type="email" required maxlength="180"></div>
+        <div class="field"><label for="date">Event date</label><input id="date" type="date" required></div>
+        <div class="field"><label for="time">Start time</label><input id="time" type="time" required></div>
+        <div class="field"><label for="eventType">Event type</label><select id="eventType" required><option value="">Choose</option><option>Birthday Party</option><option>School Event</option><option>Community Event</option><option>Corporate Event</option><option>Other</option></select></div>
+        <div class="field"><label for="guests">Estimated guests</label><input id="guests" type="number" min="1" max="5000"></div>
+        <div class="field full"><label for="address">Event location</label><input id="address" required maxlength="300" placeholder="Street, city, state"></div>
+        <div class="field full"><label for="notes">Notes</label><textarea id="notes" maxlength="1000" placeholder="Anything else we should know?"></textarea></div>
+      </div>
+      <button class="btn primary" style="width:100%;margin-top:15px" type="submit" id="submitBtn">Send Booking Request</button>
+      <div class="msg" id="bookingMsg" aria-live="polite"></div>
+    </form>
+    <div>
+      <div class="card">
+        <h3 style="margin-top:0">Booking summary</h3>
+        <div class="summaryRow"><span>Date</span><strong id="sDate">Not selected</strong></div>
+        <div class="summaryRow"><span>Time</span><strong id="sTime">Not selected</strong></div>
+        <div class="summaryRow"><span>Event</span><strong id="sEvent">Not selected</strong></div>
+        <div class="summaryRow"><span>Guests</span><strong id="sGuests">—</strong></div>
+        <div class="summaryRow"><span>Status</span><strong style="color:var(--pink2)">Request only</strong></div>
+      </div>
+      <div class="card" style="margin-top:16px"><h3 style="margin-top:0">Scooply AI</h3><p>Ask questions while you book. The live version uses AI but will never invent availability or confirm a booking by itself.</p><button class="btn secondary" id="openAi2" type="button">Open AI Assistant</button></div>
+    </div>
+  </div>
+</div></section>
+
+<section id="how"><div class="wrap"><div class="head"><h2>How it works</h2></div><div class="cards"><div class="card"><h3>1. Request</h3><p>Customer sends the event details.</p></div><div class="card"><h3>2. Review</h3><p>Scooply checks the request.</p></div><div class="card"><h3>3. Confirm by email</h3><p>The team replies from scooplyicecreamtruck@gmail.com.</p></div></div></div></section>
+</main>
+
+<button class="chatBtn" id="chatBtn" type="button">✨ Ask Scooply AI</button>
+<aside class="chat" id="chat">
+  <div class="chatHead"><div><strong>Scooply AI Assistant</strong><small>Booking help • No payment</small></div><button class="close" id="closeChat" type="button">×</button></div>
+  <div class="messages" id="messages"><div class="bubble bot">Hi! 👋 Tell me what you need help with. I can guide you through a booking request.</div></div>
+  <form class="chatForm" id="chatForm"><input id="chatInput" placeholder="Ask a question..." autocomplete="off"><button type="submit">Send</button></form>
+</aside>
+
+<footer><div class="wrap foot"><div><strong>Scooply Ice Cream Truck</strong><br>Sweet moments. Anywhere.</div><a href="mailto:scooplyicecreamtruck@gmail.com">scooplyicecreamtruck@gmail.com</a></div></footer>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const date = $("date"), time = $("time"), eventType = $("eventType"), guests = $("guests");
+  const today = new Date(), p = n => String(n).padStart(2,"0");
+  date.min = `${today.getFullYear()}-${p(today.getMonth()+1)}-${p(today.getDate())}`;
+
+  function summary(){
+    $("sDate").textContent = date.value || "Not selected";
+    $("sTime").textContent = time.value || "Not selected";
+    $("sEvent").textContent = eventType.value || "Not selected";
+    $("sGuests").textContent = guests.value || "—";
+  }
+  [date,time,eventType,guests].forEach(x => x.addEventListener("input", summary));
+
+  $("bookingForm").addEventListener("submit", async e => {
+    e.preventDefault();
+    if (!e.currentTarget.reportValidity()) return;
+    const btn = $("submitBtn"), msg = $("bookingMsg");
+    btn.disabled = true; btn.textContent = "Sending...";
+    msg.style.display = "none";
+    try {
+      const payload = {
+        name:$("name").value, email:$("email").value, date:date.value, time:time.value,
+        eventType:eventType.value, guests:guests.value, address:$("address").value, notes:$("notes").value
+      };
+      const r = await fetch("/api/bookings",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
+      const j = await r.json();
+      if (!r.ok || !j.ok) throw new Error(j.error || "Could not send request.");
+      msg.className = "msg ok"; msg.style.display = "block";
+      msg.textContent = `Request received! Your request number is ${j.bookingId}. Scooply will review it and reply by email.`;
+      e.currentTarget.reset(); summary();
+    } catch(err) {
+      msg.className = "msg bad"; msg.style.display = "block";
+      msg.textContent = err.message || "Could not send request.";
+    } finally {
+      btn.disabled = false; btn.textContent = "Send Booking Request";
+    }
+  });
+
+  const chat = $("chat"), messages = $("messages"), input = $("chatInput");
+  const history = [];
+  function open(){chat.classList.add("open");setTimeout(()=>input.focus(),50)}
+  function close(){chat.classList.remove("open")}
+  $("chatBtn").addEventListener("click",open);$("openAi").addEventListener("click",open);$("openAi2").addEventListener("click",open);$("closeChat").addEventListener("click",close);
+  function bubble(text, who){const d=document.createElement("div");d.className=`bubble ${who}`;d.textContent=text;messages.appendChild(d);messages.scrollTop=messages.scrollHeight}
+  $("chatForm").addEventListener("submit", async e => {
+    e.preventDefault(); const text=input.value.trim(); if(!text)return;
+    bubble(text,"user"); input.value=""; history.push({role:"user",content:text});
+    const thinking=document.createElement("div");thinking.className="bubble bot";thinking.textContent="Thinking…";messages.appendChild(thinking);messages.scrollTop=messages.scrollHeight;
+    try{
+      const r=await fetch("/api/ai",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:text,history})});
+      const j=await r.json();thinking.remove();
+      const ans=j.answer || j.error || "Please email Scooply for help.";
+      bubble(ans,"bot");history.push({role:"assistant",content:ans});
+      if(history.length>12)history.splice(0,history.length-12);
+    }catch{thinking.remove();bubble("AI is temporarily unavailable. Please email scooplyicecreamtruck@gmail.com.","bot")}
+  });
+})();
+</script>
+</body></html>

@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Scooply Dashboard</title>
+<style>
+:root{--pink:#ff6fa8;--teal:#66d7d0;--ink:#23323a;--muted:#6f7f86;--line:#e6edef;--bg:#f7faf9}*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink)}.wrap{width:min(1180px,calc(100% - 28px));margin:auto;padding:34px 0 60px}.top{display:flex;justify-content:space-between;gap:18px;align-items:center;flex-wrap:wrap}.brand{font-weight:1000;font-size:26px}.brand span{color:var(--pink)}.login{display:flex;gap:8px;flex-wrap:wrap}input,select,button{font:inherit}input,select{border:1px solid #d9e4e6;border-radius:13px;padding:11px 12px;background:#fff}button{border:0;border-radius:13px;padding:11px 14px;font-weight:900;cursor:pointer;background:var(--pink);color:#fff}.meta{margin:14px 0 24px;color:var(--muted)}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}.stat,.card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:18px}.stat b{display:block;font-size:28px}.stat span{font-size:12px;color:var(--muted);font-weight:800}.list{display:grid;gap:12px}.booking{display:grid;grid-template-columns:1fr auto;gap:16px}.booking h3{margin:0 0 8px}.details{display:flex;gap:14px;flex-wrap:wrap;color:var(--muted);font-size:13px}.notes{margin-top:10px;font-size:14px;line-height:1.55}.status{display:flex;align-items:flex-start;gap:8px}.status select{min-width:150px}.empty{text-align:center;color:var(--muted);padding:38px}.error{color:#a33;font-weight:800;margin-top:14px}.hidden{display:none}@media(max-width:800px){.stats{grid-template-columns:1fr 1fr}.booking{grid-template-columns:1fr}.status{justify-content:flex-start}}@media(max-width:480px){.stats{grid-template-columns:1fr}.login input,.login button{width:100%}}
+</style></head>
+<body><main class="wrap">
+<div class="top"><div><div class="brand"><span>Scooply</span> Dashboard</div><div class="meta">Booking requests • private admin view</div></div><div class="login"><input id="password" type="password" placeholder="Admin password"><button id="load">Open Dashboard</button></div></div>
+<div id="error" class="error"></div>
+<section id="content" class="hidden">
+  <div class="stats"><div class="stat"><b id="total">0</b><span>Total requests</span></div><div class="stat"><b id="new">0</b><span>New requests</span></div><div class="stat"><b id="confirmed">0</b><span>Confirmed</span></div><div class="stat"><b id="completed">0</b><span>Completed</span></div></div>
+  <div class="list" id="list"></div>
+</section>
+</main>
+<script>
+(() => {
+ let password="";
+ const $=id=>document.getElementById(id);
+ function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[c]))}
+ async function load(){
+   password=$("password").value;
+   $("error").textContent="";
+   const r=await fetch("/api/admin/bookings",{headers:{"x-admin-password":password}});
+   const j=await r.json();
+   if(!r.ok){$("content").classList.add("hidden");$("error").textContent="Wrong password or dashboard not configured.";return}
+   render(j.bookings||[]);
+ }
+ function render(items){
+   $("content").classList.remove("hidden");
+   $("total").textContent=items.length;
+   $("new").textContent=items.filter(x=>x.status==="New Request").length;
+   $("confirmed").textContent=items.filter(x=>x.status==="Confirmed").length;
+   $("completed").textContent=items.filter(x=>x.status==="Completed").length;
+   const list=$("list");
+   if(!items.length){list.innerHTML='<div class="card empty">No booking requests yet.</div>';return}
+   list.innerHTML=items.map(b=>`<article class="card booking" data-id="${esc(b.id)}">
+      <div><h3>${esc(b.eventType)} — ${esc(b.name)}</h3>
+      <div class="details"><span>📅 ${esc(b.date)} ${esc(b.time)}</span><span>👥 ${esc(b.guests||"—")}</span><span>📍 ${esc(b.address)}</span><span>✉️ <a href="mailto:${esc(b.email)}">${esc(b.email)}</a></span><span>#${esc(b.id)}</span></div>
+      ${b.notes?`<div class="notes"><strong>Notes:</strong> ${esc(b.notes)}</div>`:""}
+      ${b.aiSummary?`<div class="notes"><strong>AI summary:</strong> ${esc(b.aiSummary)}</div>`:""}</div>
+      <div class="status"><select aria-label="Booking status">
+      ${["New Request","Reviewing","Confirmed","Completed","Cancelled"].map(s=>`<option ${s===b.status?"selected":""}>${s}</option>`).join("")}
+      </select></div></article>`).join("");
+   list.querySelectorAll("select").forEach(sel=>sel.addEventListener("change",async e=>{
+     const article=e.target.closest("[data-id]");
+     const r=await fetch(`/api/admin/bookings/${encodeURIComponent(article.dataset.id)}`,{method:"PATCH",headers:{"Content-Type":"application/json","x-admin-password":password},body:JSON.stringify({status:e.target.value})});
+     if(!r.ok){$("error").textContent="Could not update status.";load()}
+   }));
+ }
+ $("load").addEventListener("click",load);
+ $("password").addEventListener("keydown",e=>{if(e.key==="Enter")load()});
+})();
+</script></body></html>
